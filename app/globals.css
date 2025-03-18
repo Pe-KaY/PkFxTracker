@@ -1,0 +1,402 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+/* Neon glow effects */
+.neon-glow {
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+}
+
+.neon-text {
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+}
+
+/* Global transition styles */
+* {
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Smooth page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Calendar styles - updated for better alignment */
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #22d3ee;
+  --rdp-background-color: #1f2937;
+  --rdp-accent-color-dark: #22d3ee;
+  --rdp-background-color-dark: #1f2937;
+  --rdp-outline: 2px solid #22d3ee;
+  --rdp-outline-selected: 2px solid #22d3ee;
+  margin: 0;
+}
+
+.rdp-months {
+  display: flex;
+  justify-content: center;
+}
+
+.rdp-month {
+  background-color: #111827;
+  border-radius: 0.5rem;
+  padding: 8px;
+}
+
+/* Center the month/year caption */
+.rdp-caption {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 0.5rem;
+  margin-bottom: 8px;
+}
+
+.rdp-caption_label {
+  font-weight: 500;
+  font-size: 1rem;
+  color: white;
+  padding: 0 8px;
+}
+
+/* Position the navigation buttons */
+.rdp-nav {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.rdp-nav_button {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  background: #374151;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.rdp-nav_button:hover {
+  background-color: #4b5563;
+}
+
+/* Fix alignment of days of week headers with date cells */
+.rdp-head_row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+}
+
+.rdp-head_cell {
+  font-weight: 600;
+  text-align: center;
+  color: #9ca3af;
+  padding: 0.5rem 0;
+  font-size: 0.75rem;
+  width: var(--rdp-cell-size);
+}
+
+.rdp-tbody {
+  display: table-row-group;
+}
+
+/* Fix the grid layout for rows and cells */
+.rdp-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.rdp-cell {
+  text-align: center;
+  padding: 0;
+  width: var(--rdp-cell-size);
+  height: var(--rdp-cell-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rdp-day {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.rdp-day:hover:not(.rdp-day_selected) {
+  background-color: #374151;
+}
+
+.rdp-day_selected {
+  background-color: #22d3ee;
+  color: #111827;
+  font-weight: bold;
+}
+
+.rdp-day_selected:hover {
+  background-color: #0891b2;
+}
+
+.rdp-day_outside {
+  color: #6b7280;
+}
+
+.rdp-day_today {
+  font-weight: bold;
+  color: #22d3ee;
+  border: 1px solid #22d3ee;
+}
+
+/* Ensure the table has proper spacing */
+.rdp-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Fix for shadcn Calendar component */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+}
+
+.calendar-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fix for shadcn Calendar component */
+.react-calendar {
+  width: 100%;
+  max-width: 100%;
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: white;
+}
+
+/* Fix for day grid in shadcn Calendar */
+.react-calendar__month-view__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.react-calendar__month-view__weekdays {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+  padding: 0.5rem 0;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.react-calendar__tile {
+  text-align: center;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+/* DatePicker Custom Styles */
+.react-datepicker {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+  font-family: inherit !important;
+}
+
+.react-datepicker__header {
+  background-color: #111827 !important;
+  border-bottom: 1px solid #1f2937 !important;
+  padding-top: 12px !important;
+}
+
+.react-datepicker__current-month {
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+}
+
+.react-datepicker__day-name {
+  color: #9ca3af !important;
+  font-weight: 500 !important;
+  width: 34px !important;
+}
+
+.react-datepicker__day {
+  color: #e5e7eb !important;
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  border-radius: 6px !important;
+  margin: 2px !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #1f2937 !important;
+  color: #22d3ee !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #0891b2 !important;
+  color: white !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #0891b2 !important;
+  color: white !important;
+}
+
+.react-datepicker__day--today {
+  font-weight: bold !important;
+  color: #22d3ee !important;
+  border: 1px solid #22d3ee !important;
+}
+
+.react-datepicker__day--disabled {
+  color: #4b5563 !important;
+  cursor: not-allowed !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #9ca3af !important;
+}
+
+.react-datepicker__navigation:hover *::before {
+  border-color: #22d3ee !important;
+}

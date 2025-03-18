@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Rules for accounts collection
+    match /accounts/{accountId} {
+      allow read, write: if isOwner(resource.data.userId) || 
+        (request.method == 'create' && isOwner(request.resource.data.userId));
+      
+      // Validate account data structure
+      allow create: if request.resource.data.keys().hasAll(['name', 'size', 'currency', 'userId']) &&
+        request.resource.data.name is string &&
+        request.resource.data.size is number &&
+        request.resource.data.size > 0 &&
+        request.resource.data.currency is string;
+    }
+
+    // Rules for trades collection
+    match /trades/{tradeId} {
+      allow read, write: if isOwner(resource.data.userId) || 
+        (request.method == 'create' && isOwner(request.resource.data.userId));
+      
+      // Validate trade data structure
+      allow create: if request.resource.data.keys().hasAll([
+        'accountId', 'pair', 'direction', 'risk', 'riskReward', 
+        'result', 'profit', 'userId'
+      ]) &&
+        request.resource.data.risk is number &&
+        request.resource.data.risk > 0 &&
+        request.resource.data.profit is number &&
+        request.resource.data.direction in ['buy', 'sell'] &&
+        request.resource.data.result in ['win', 'loss', 'breakeven'];
+    }
+  }
+}
