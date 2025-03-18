@@ -400,3 +400,92 @@
 .react-datepicker__navigation:hover *::before {
   border-color: #22d3ee !important;
 }
+
+@layer utilities {
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+}
+
+/* Neon glow animation */
+@keyframes neonPulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    border-color: rgba(91, 59, 255, 0.8);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+    border-color: rgba(34, 211, 238, 0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    border-color: rgba(236, 72, 153, 0.8);
+  }
+}
+
+/* Logo glow animation */
+@keyframes logoGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(91, 59, 255, 0.8),
+      0 0 20px rgba(91, 59, 255, 0.8), 0 0 30px rgba(34, 211, 238, 0.8),
+      0 0 40px rgba(236, 72, 153, 0.8);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(91, 59, 255, 1), 0 0 30px rgba(34, 211, 238, 1),
+      0 0 40px rgba(236, 72, 153, 1), 0 0 50px rgba(91, 59, 255, 1);
+  }
+}
+
+/* Radiating effect animation */
+@keyframes radiate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.animate-pulse {
+  animation: neonPulse 2s infinite;
+}
+
+.animate-glow {
+  animation: logoGlow 2s infinite;
+  position: relative;
+}
+
+.radiate-effect {
+  position: relative;
+}
+
+.radiate-effect::before,
+.radiate-effect::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border: 2px solid transparent;
+  border-radius: inherit;
+  animation: radiate 2s infinite;
+  background: linear-gradient(45deg, #5b3bff, #22d3ee, #ec4899);
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  opacity: 0.5;
+}
+
+.radiate-effect::after {
+  animation-delay: 1s;
+}
+
+/* Shine animation for text */
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
