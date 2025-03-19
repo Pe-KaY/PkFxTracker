@@ -1,6 +1,12 @@
 "use client"
 
-import { ArrowDownRight, ArrowUpRight, DollarSign, TrendingDown, TrendingUp } from "lucide-react"
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  DollarSign,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useAccounts } from "@/components/account-context"
 import { useMemo } from "react"
@@ -25,7 +31,8 @@ const motivationalQuotes = [
 ]
 
 export function StatsCards() {
-  const { selectedAccountId, calculateAccountStats, getAccountById } = useAccounts()
+  const { selectedAccountId, calculateAccountStats, getAccountById } =
+    useAccounts()
 
   // Select a random motivational quote
   const randomQuote = useMemo(() => {
@@ -38,11 +45,15 @@ export function StatsCards() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="bg-gray-900 border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400">Select an Account</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-400">
+              Select an Account
+            </CardTitle>
             <DollarSign className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg font-bold text-gray-400">Please select an account to view stats</div>
+            <div className="text-lg font-bold text-gray-400">
+              Please select an account to view stats
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -55,22 +66,33 @@ export function StatsCards() {
   if (!account) return null
 
   const currentBalance = account.size + stats.totalProfit
-  const percentChange = account.size > 0 ? (stats.totalProfit / account.size) * 100 : 0
+  const percentChange =
+    account.size > 0 ? (stats.totalProfit / account.size) * 100 : 0
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <Card className="bg-gray-900 border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-gray-400">Total Profit/Loss</CardTitle>
+          <CardTitle className="text-sm font-medium text-gray-400">
+            Total Profit/Loss
+          </CardTitle>
           <DollarSign className="h-4 w-4 text-cyan-400" />
         </CardHeader>
         <CardContent>
-          <div className={`text-2xl font-bold ${stats.totalProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+          <div
+            className={`text-2xl font-bold ${
+              stats.totalProfit >= 0 ? "text-emerald-400" : "text-red-400"
+            }`}
+          >
             {stats.totalProfit >= 0 ? "+" : ""}
             {stats.totalProfit.toFixed(2)}
           </div>
           <div className="flex items-center text-xs mt-1">
-            <span className={`flex items-center ${percentChange >= 0 ? "text-emerald-500" : "text-red-500"}`}>
+            <span
+              className={`flex items-center ${
+                percentChange >= 0 ? "text-emerald-500" : "text-red-500"
+              }`}
+            >
               {percentChange >= 0 ? (
                 <ArrowUpRight className="h-3 w-3 mr-1" />
               ) : (
@@ -84,37 +106,54 @@ export function StatsCards() {
 
       <Card className="bg-gray-900 border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-gray-400">Win Rate</CardTitle>
+          <CardTitle className="text-sm font-medium text-gray-400">
+            Win Rate
+          </CardTitle>
           <TrendingUp className="h-4 w-4 text-purple-400" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-white">{stats.winRate.toFixed(1)}%</div>
-          <div className="flex items-center text-xs text-gray-400 mt-1">Based on {stats.totalTrades} total trades</div>
+          <div className="text-2xl font-bold text-white">
+            {stats.winRate.toFixed(1)}%
+          </div>
+          <div className="flex items-center text-xs text-gray-400 mt-1">
+            Based on {stats.totalTrades} total trades
+          </div>
         </CardContent>
       </Card>
 
       <Card className="bg-gray-900 border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-gray-400">Current Balance</CardTitle>
+          <CardTitle className="text-sm font-medium text-gray-400">
+            Current Balance
+          </CardTitle>
           <TrendingDown className="h-4 w-4 text-emerald-400" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-white">${currentBalance.toFixed(2)}</div>
-          <div className="flex items-center text-xs text-gray-400 mt-1">Starting: ${account.size.toFixed(2)}</div>
+          <div className="text-2xl font-bold text-white">
+            ${currentBalance.toFixed(2)}
+          </div>
+          <div className="flex items-center text-xs text-gray-400 mt-1">
+            Starting: ${account.size.toFixed(2)}
+          </div>
         </CardContent>
       </Card>
 
       <Card className="bg-gray-900 border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-gray-400">Total Trades</CardTitle>
+          <CardTitle className="text-sm font-medium text-gray-400">
+            Total Trades
+          </CardTitle>
           <TrendingUp className="h-4 w-4 text-cyan-400" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-white">{stats.totalTrades}</div>
-          <div className="text-xs text-gray-400 mt-1 italic">"{randomQuote}"</div>
+          <div className="text-2xl font-bold text-white">
+            {stats.totalTrades}
+          </div>
+          <div className="text-xs text-gray-400 mt-1 italic">
+            "{randomQuote}"
+          </div>
         </CardContent>
       </Card>
     </div>
   )
 }
-

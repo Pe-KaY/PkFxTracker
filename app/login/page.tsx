@@ -23,7 +23,7 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, email, password)
       setTimeout(() => {
-        router.push("/")
+        router.push("/dashboard")
       }, 1500)
     } catch (error: any) {
       console.error("Login error:", error)

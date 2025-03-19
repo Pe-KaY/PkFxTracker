@@ -20,21 +20,32 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { DollarSign, Plus } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { auth } from "@/lib/firebase"
 
-export function DashboardPage() {
+export default function DashboardPage() {
   const { toast } = useToast()
   const { selectedAccountId, accounts, addAccount } = useAccounts()
-  const [mounted, setMounted] = useState(false)
-
+  const router = useRouter()
   const [newAccountName, setNewAccountName] = useState("")
   const [newAccountSize, setNewAccountSize] = useState("")
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
-  // Set mounted state to true after component mounts
   useEffect(() => {
-    setMounted(true)
-    return () => setMounted(false)
-  }, [])
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        router.push("/login")
+      } else {
+        setMounted(true)
+      }
+    })
+
+    return () => {
+      setMounted(false)
+      unsubscribe()
+    }
+  }, [router])
 
   const handleAddAccount = () => {
     if (!newAccountName.trim()) {
@@ -74,9 +85,27 @@ export function DashboardPage() {
     })
   }
 
-  // Don't render until component is mounted to avoid hydration issues
+  // Return empty div while mounting to maintain layout
   if (!mounted) {
-    return null
+    return (
+      <div className="flex h-screen bg-black text-white overflow-hidden">
+        <Sidebar
+          activePage="dashboard"
+          showMobile={showMobileMenu}
+          onClose={() => setShowMobileMenu(false)}
+        />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <Header onMenuClick={() => setShowMobileMenu(!showMobileMenu)} />
+          <main className="flex-1 overflow-auto p-6 bg-gradient-to-br from-gray-950 to-gray-900">
+            <div className="max-w-7xl mx-auto space-y-6">
+              <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400">
+                Trading Dashboard
+              </h1>
+            </div>
+          </main>
+        </div>
+      </div>
+    )
   }
 
   return (

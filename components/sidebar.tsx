@@ -99,7 +99,7 @@ export function Sidebar({
 
       <nav className="flex-1 p-4 space-y-2 overflow-auto">
         <Link
-          href="/"
+          href="/dashboard"
           className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 w-full min-h-[40px] ${
             activePage === "dashboard"
               ? "bg-gray-900 text-cyan-400 border border-gray-800 shadow-[0_0_10px_rgba(34,211,238,0.2)]"

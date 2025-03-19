@@ -2,26 +2,23 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 
 export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in, redirect to accounts page
-        router.replace("/accounts")
+        router.push("/dashboard")
       } else {
-        // No user is signed in, redirect to login page
-        router.replace("/login")
+        router.push("/login")
       }
     })
 
-    // Cleanup subscription on unmount
     return () => unsubscribe()
   }, [router])
 
+  // Return null or a loading state while checking auth
   return null
 }
