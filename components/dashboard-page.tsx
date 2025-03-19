@@ -80,94 +80,88 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="flex h-screen bg-black text-white overflow-hidden">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar
         activePage="dashboard"
         showMobile={showMobileMenu}
         onClose={() => setShowMobileMenu(false)}
       />
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 overflow-y-auto">
         <Header onMenuClick={() => setShowMobileMenu(!showMobileMenu)} />
         <main className="flex-1 overflow-auto p-6 bg-gradient-to-br from-gray-950 to-gray-900">
           <div className="max-w-7xl mx-auto space-y-6">
-            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400">
-              Trading Dashboard
-            </h1>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400">
+                 Trading Dashboard
+                </h1>
+                <p className="text-gray-400">Monitor your trading performance</p>
+              </div>
+            </div>
 
-            {accounts.length === 0 ? (
-              <div className="flex justify-center items-center">
-                <Card className="bg-gray-900 border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)] transition-all duration-300 max-w-md w-full">
-                  <CardHeader>
-                    <CardTitle className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-                      Welcome to pe-Kay FX Tracker
-                    </CardTitle>
-                    <CardDescription className="text-gray-400">
-                      Let's get started by creating your first trading account
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="account-name" className="text-gray-300">
-                        Account Name
-                      </Label>
-                      <Input
-                        id="account-name"
-                        value={newAccountName}
-                        onChange={(e) => setNewAccountName(e.target.value)}
-                        placeholder="Main Trading Account"
-                        className="bg-gray-800 border-gray-700 text-white focus-visible:ring-cyan-500 transition-colors duration-200"
-                      />
-                    </div>
+            <StatsCards />
 
-                    <div className="space-y-2">
-                      <Label htmlFor="account-size" className="text-gray-300">
-                        Account Size
-                      </Label>
-                      <div className="relative">
-                        <DollarSign className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            <div className="grid grid-cols-1 gap-6">
+              {accounts.length === 0 ? (
+                <div className="flex justify-center items-center">
+                  <Card className="bg-gray-900 border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)] transition-all duration-300 max-w-md w-full">
+                    <CardHeader>
+                      <CardTitle className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
+                        Welcome to pe-Kay FX Tracker
+                      </CardTitle>
+                      <CardDescription className="text-gray-400">
+                        Let's get started by creating your first trading account
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="account-name" className="text-gray-300">
+                          Account Name
+                        </Label>
                         <Input
-                          id="account-size"
-                          value={newAccountSize}
-                          onChange={(e) => setNewAccountSize(e.target.value)}
-                          placeholder="10000"
-                          className="bg-gray-800 border-gray-700 text-white focus-visible:ring-cyan-500 pl-9 transition-colors duration-200"
+                          id="account-name"
+                          value={newAccountName}
+                          onChange={(e) => setNewAccountName(e.target.value)}
+                          placeholder="Main Trading Account"
+                          className="bg-gray-800 border-gray-700 text-white focus-visible:ring-cyan-500 transition-colors duration-200"
                         />
                       </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button
-                      onClick={handleAddAccount}
-                      className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 transition-all duration-300"
-                    >
-                      <Plus className="mr-2 h-4 w-4" /> Create Account
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </div>
-            ) : (
-              <>
-                <StatsCards />
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {selectedAccountId ? (
-                    <>
-                      <TradeForm />
-                      <TradeHistory />
-                    </>
-                  ) : (
-                    <div className="lg:col-span-2 p-6 bg-gray-900 border border-gray-800 rounded-lg text-center transition-all duration-300">
-                      <h2 className="text-xl font-bold text-white mb-2">
-                        No Account Selected
-                      </h2>
-                      <p className="text-gray-400">
-                        Please select an account from the sidebar to view your
-                        dashboard
-                      </p>
-                    </div>
-                  )}
+
+                      <div className="space-y-2">
+                        <Label htmlFor="account-size" className="text-gray-300">
+                          Account Size
+                        </Label>
+                        <div className="relative">
+                          <DollarSign className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                          <Input
+                            id="account-size"
+                            value={newAccountSize}
+                            onChange={(e) => setNewAccountSize(e.target.value)}
+                            placeholder="10000"
+                            className="bg-gray-800 border-gray-700 text-white focus-visible:ring-cyan-500 pl-9 transition-colors duration-200"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        onClick={handleAddAccount}
+                        className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 transition-all duration-300"
+                      >
+                        <Plus className="mr-2 h-4 w-4" /> Create Account
+                      </Button>
+                    </CardFooter>
+                  </Card>
                 </div>
-              </>
-            )}
+              ) : (
+                <div className="flex justify-center items-center w-full">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+                    <TradeForm />
+                    <TradeHistory />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </main>
       </div>
