@@ -5,6 +5,7 @@ import { MobileNav } from "@/components/mobile-nav"
 import { auth } from "@/lib/firebase"
 import { signOut } from "firebase/auth"
 import { SyncStatus } from "@/components/sync-status"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,21 +90,25 @@ export function Header({ onMenuClick }: HeaderProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="bg-gray-800 border-gray-700 text-white"
+              className="w-[200px] bg-gray-900 border-gray-800"
             >
               <DropdownMenuLabel>Account</DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-gray-700" />
               <DropdownMenuItem
-                className="hover:bg-gray-700 hover:text-cyan-400 cursor-pointer gap-2"
-                onClick={handleSignOut}
-                disabled={isSigningOut}
+                className="text-gray-400"
+                onSelect={handleSignOut}
               >
-                {isSigningOut ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <LogOut className="h-4 w-4" />
-                )}
-                {isSigningOut ? "Signing out..." : "Sign out"}
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-gray-400 hover:text-white hover:bg-gray-800 transition-colors duration-200"
+                >
+                  {isSigningOut ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <LogOut className="mr-2 h-4 w-4" />
+                  )}
+                  {isSigningOut ? "Signing out..." : "Sign Out"}
+                </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
