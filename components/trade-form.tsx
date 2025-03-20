@@ -86,7 +86,7 @@ const durationOptions = [
 export function TradeForm() {
   const { toast } = useToast()
   const { selectedAccountId, addTrade } = useAccounts()
-  const playCashSound = useSound("/sounds/cash register.mp3", 0.5)
+  const playCashSound = useSound("/sounds/Register.mp3", 0.5)
 
   const [date, setDate] = useState<Date | undefined>(new Date())
   const [pair, setPair] = useState("")
