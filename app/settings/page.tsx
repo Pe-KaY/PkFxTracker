@@ -62,9 +62,14 @@ export default function SettingsPage() {
         <Header onMenuClick={() => setShowMobileMenu(!showMobileMenu)} />
         <main className="flex-1 overflow-auto p-6 bg-gradient-to-br from-gray-950 to-gray-900">
           <div className="max-w-7xl mx-auto space-y-6">
-            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400">
-              Settings
-            </h1>
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400">
+                Settings
+              </h2>
+              <p className="text-muted-foreground">
+                Customize your trading preferences and account settings
+              </p>
+            </div>
 
             <Card className="bg-gray-900 border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
               <CardHeader>

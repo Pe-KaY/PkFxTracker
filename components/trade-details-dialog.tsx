@@ -2,7 +2,15 @@
 
 import { useState } from "react"
 import { format } from "date-fns"
-import { ArrowDown, ArrowUp, Calendar, Edit, Trash, X, Maximize } from "lucide-react"
+import {
+  ArrowDown,
+  ArrowUp,
+  Calendar,
+  Edit,
+  Trash,
+  X,
+  Maximize,
+} from "lucide-react"
 import { useAccounts } from "@/components/account-context"
 import { Button } from "@/components/ui/button"
 import {
@@ -32,7 +40,11 @@ interface TradeDetailsDialogProps {
   onOpenChange: (open: boolean) => void
 }
 
-export function TradeDetailsDialog({ tradeId, isOpen, onOpenChange }: TradeDetailsDialogProps) {
+export function TradeDetailsDialog({
+  tradeId,
+  isOpen,
+  onOpenChange,
+}: TradeDetailsDialogProps) {
   const { getTradeById, deleteTrade } = useAccounts()
   const { toast } = useToast()
   const [isEditMode, setIsEditMode] = useState(false)
@@ -77,10 +89,16 @@ export function TradeDetailsDialog({ tradeId, isOpen, onOpenChange }: TradeDetai
             <DialogTitle className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
               Edit Trade
             </DialogTitle>
-            <DialogDescription className="text-gray-400">Update the details of your trade</DialogDescription>
+            <DialogDescription className="text-gray-400">
+              Update the details of your trade
+            </DialogDescription>
           </DialogHeader>
 
-          <TradeEditForm trade={trade} onCancel={() => setIsEditMode(false)} onComplete={handleEditComplete} />
+          <TradeEditForm
+            trade={trade}
+            onCancel={() => setIsEditMode(false)}
+            onComplete={handleEditComplete}
+          />
         </DialogContent>
       </Dialog>
     )
@@ -89,99 +107,120 @@ export function TradeDetailsDialog({ tradeId, isOpen, onOpenChange }: TradeDetai
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent className="bg-gray-900 border-gray-800 text-white sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
+        <DialogContent className="bg-gray-900 border-gray-800 text-white sm:max-w-[425px] max-h-[90vh] overflow-hidden flex flex-col">
+          <DialogHeader className="border-b border-gray-800 pb-4">
+            <DialogTitle className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
               Trade Details
             </DialogTitle>
-            <DialogDescription className="text-gray-400">View the complete details of your trade</DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <h3 className="text-lg font-medium text-white">{trade.pair}</h3>
-                <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <Calendar className="h-4 w-4" />
-                  <span>{format(new Date(trade.date), "MMMM dd, yyyy")}</span>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                <div
-                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    trade.direction === "buy" ? "bg-emerald-400/20 text-emerald-400" : "bg-red-400/20 text-red-400"
-                  }`}
-                >
-                  <span className="flex items-center gap-1">
-                    {trade.direction === "buy" ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
-                    {trade.direction}
-                  </span>
+          <div className="overflow-y-auto flex-1 py-4">
+            <div className="space-y-4">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-lg font-medium text-white">
+                    {trade.pair}
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <Calendar className="h-4 w-4" />
+                    <span>{format(new Date(trade.date), "MMMM dd, yyyy")}</span>
+                  </div>
                 </div>
 
-                <div className="px-3 py-1 rounded-full bg-gray-700 text-xs font-medium text-gray-300">
-                  Risk: {trade.risk}%
-                </div>
+                <div className="flex flex-wrap gap-2">
+                  <div
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      trade.direction === "buy"
+                        ? "bg-emerald-400/20 text-emerald-400"
+                        : "bg-red-400/20 text-red-400"
+                    }`}
+                  >
+                    <span className="flex items-center gap-1">
+                      {trade.direction === "buy" ? (
+                        <ArrowUp className="h-3 w-3" />
+                      ) : (
+                        <ArrowDown className="h-3 w-3" />
+                      )}
+                      {trade.direction}
+                    </span>
+                  </div>
 
-                <div className="px-3 py-1 rounded-full bg-gray-700 text-xs font-medium text-gray-300">
-                  R:R {trade.riskReward}
-                </div>
+                  <div className="px-3 py-1 rounded-full bg-gray-700 text-xs font-medium text-gray-300">
+                    Risk: {trade.risk}%
+                  </div>
 
-                <div
-                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    trade.result === "win"
-                      ? "bg-emerald-400/20 text-emerald-400"
-                      : trade.result === "loss"
+                  <div className="px-3 py-1 rounded-full bg-gray-700 text-xs font-medium text-gray-300">
+                    R:R {trade.riskReward}
+                  </div>
+
+                  <div
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      trade.result === "win"
+                        ? "bg-emerald-400/20 text-emerald-400"
+                        : trade.result === "loss"
                         ? "bg-red-400/20 text-red-400"
                         : "bg-yellow-400/20 text-yellow-400"
+                    }`}
+                  >
+                    {trade.result}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
+                <span className="text-gray-300">Profit/Loss:</span>
+                <span
+                  className={`text-xl font-bold ${
+                    trade.profit > 0
+                      ? "text-emerald-400"
+                      : trade.profit < 0
+                      ? "text-red-400"
+                      : "text-yellow-400"
                   }`}
                 >
-                  {trade.result}
-                </div>
+                  {trade.profit >= 0 ? "+" : ""}
+                  {typeof trade.profit === "number"
+                    ? trade.profit.toFixed(2)
+                    : "0.00"}
+                </span>
               </div>
+
+              {trade.notes && (
+                <div className="p-4 bg-gray-800 rounded-lg">
+                  <h4 className="text-sm font-medium text-gray-300 mb-2">
+                    Notes
+                  </h4>
+                  <p className="text-white whitespace-pre-wrap">
+                    {trade.notes}
+                  </p>
+                </div>
+              )}
+
+              {trade.screenshot && (
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="text-sm font-medium text-gray-300">
+                      Screenshot
+                    </h4>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-gray-400 hover:text-white"
+                      onClick={() => setIsScreenshotFullscreen(true)}
+                    >
+                      <Maximize className="h-4 w-4 mr-1" /> View Fullscreen
+                    </Button>
+                  </div>
+                  <div className="border border-gray-700 rounded-lg overflow-hidden">
+                    <img
+                      src={trade.screenshot || "/placeholder.svg"}
+                      alt="Trade screenshot"
+                      className="w-full object-contain max-h-[200px]"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
-
-            <div className="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
-              <span className="text-gray-300">Profit/Loss:</span>
-              <span
-                className={`text-xl font-bold ${
-                  trade.profit > 0 ? "text-emerald-400" : trade.profit < 0 ? "text-red-400" : "text-yellow-400"
-                }`}
-              >
-                {trade.profit >= 0 ? "+" : ""}
-                {typeof trade.profit === "number" ? trade.profit.toFixed(2) : "0.00"}
-              </span>
-            </div>
-
-            {trade.notes && (
-              <div className="p-4 bg-gray-800 rounded-lg">
-                <h4 className="text-sm font-medium text-gray-300 mb-2">Notes</h4>
-                <p className="text-white whitespace-pre-wrap">{trade.notes}</p>
-              </div>
-            )}
-
-            {trade.screenshot && (
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-sm font-medium text-gray-300">Screenshot</h4>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-gray-400 hover:text-white"
-                    onClick={() => setIsScreenshotFullscreen(true)}
-                  >
-                    <Maximize className="h-4 w-4 mr-1" /> View Fullscreen
-                  </Button>
-                </div>
-                <div className="border border-gray-700 rounded-lg overflow-hidden">
-                  <img
-                    src={trade.screenshot || "/placeholder.svg"}
-                    alt="Trade screenshot"
-                    className="w-full object-contain max-h-[200px]"
-                  />
-                </div>
-              </div>
-            )}
           </div>
 
           <DialogFooter className="flex gap-2">
@@ -205,19 +244,28 @@ export function TradeDetailsDialog({ tradeId, isOpen, onOpenChange }: TradeDetai
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent className="bg-gray-900 border-gray-800 text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-red-400">Delete Trade</AlertDialogTitle>
+            <AlertDialogTitle className="text-red-400">
+              Delete Trade
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-gray-300">
-              Are you sure you want to delete this trade? This action cannot be undone.
+              Are you sure you want to delete this trade? This action cannot be
+              undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 hover:text-white">
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700">
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700"
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -226,7 +274,10 @@ export function TradeDetailsDialog({ tradeId, isOpen, onOpenChange }: TradeDetai
 
       {/* Fullscreen Screenshot Dialog */}
       {trade.screenshot && (
-        <Dialog open={isScreenshotFullscreen} onOpenChange={setIsScreenshotFullscreen}>
+        <Dialog
+          open={isScreenshotFullscreen}
+          onOpenChange={setIsScreenshotFullscreen}
+        >
           <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-[90vw] max-h-[90vh] p-2">
             <div className="relative w-full h-full">
               <Button
@@ -251,4 +302,3 @@ export function TradeDetailsDialog({ tradeId, isOpen, onOpenChange }: TradeDetai
     </>
   )
 }
-

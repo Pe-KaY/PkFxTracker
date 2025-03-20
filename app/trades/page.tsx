@@ -113,9 +113,14 @@ export default function TradesPage() {
           <div className="p-6">
             <div className="max-w-7xl mx-auto">
               <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400">
-                  Trades
-                </h1>
+                <div>
+                  <h2 className="text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400">
+                    Trades
+                  </h2>
+                  <p className="text-muted-foreground">
+                    View and manage your trading history
+                  </p>
+                </div>
                 <div className="flex gap-2">
                   <Button
                     variant="outline"

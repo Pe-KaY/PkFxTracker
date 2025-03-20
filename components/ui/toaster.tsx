@@ -44,7 +44,7 @@ export function Toaster() {
         <Toast
           key={id}
           {...props}
-          className="bg-gray-900 border-gray-800 text-white animate-in slide-in-from-bottom-full duration-700 shadow-2xl p-3 sm:p-4"
+          className="bg-gray-900 border-gray-800 text-white animate-in slide-in-from-bottom-full duration-700 shadow-2xl p-3 sm:p-4 w-[calc(100%-20px)] sm:w-auto mx-2 sm:mx-0 max-w-[420px] sm:max-w-[380px]"
           style={{
             boxShadow: `0 0 20px 4px ${
               toastColors[id] || "rgba(34, 211, 238, 0.7)"
@@ -53,23 +53,23 @@ export function Toaster() {
             borderWidth: "1px",
           }}
         >
-          <div className="grid gap-2">
+          <div className="grid gap-1">
             {title && (
-              <ToastTitle className="text-base sm:text-lg font-bold text-white">
+              <ToastTitle className="text-sm sm:text-base font-semibold text-white">
                 {title}
               </ToastTitle>
             )}
             {description && (
-              <ToastDescription className="text-sm sm:text-base text-gray-200 opacity-100">
+              <ToastDescription className="text-xs sm:text-sm text-gray-200 opacity-90">
                 {description}
               </ToastDescription>
             )}
           </div>
           {action}
-          <ToastClose className="absolute right-2 top-2 sm:right-3 sm:top-3 text-gray-400 hover:text-white transition-colors duration-200" />
+          <ToastClose className="absolute right-1 top-1 sm:right-2 sm:top-2 opacity-70 hover:opacity-100 transition-opacity" />
         </Toast>
       ))}
-      <ToastViewport className="fixed bottom-0 right-0 z-[100] flex max-h-screen w-full flex-col-reverse gap-2 p-3 sm:p-4 sm:max-w-[380px]" />
+      <ToastViewport className="fixed bottom-0 right-0 z-[100] flex max-h-screen w-full flex-col-reverse gap-2 p-2 sm:p-4 sm:bottom-4 sm:right-4 sm:w-auto sm:max-w-[420px]" />
     </ToastProvider>
   )
 }
