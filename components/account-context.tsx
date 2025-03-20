@@ -49,6 +49,8 @@ export type Trade = {
   screenshot?: string
   userId?: string
   lastSynced?: Date
+  profitLossType: "calculated" | "manual"
+  manualProfitLoss?: number
 }
 
 type AccountContextType = {
@@ -122,6 +124,7 @@ const defaultTrades: Trade[] = [
     duration: "1-4 hours",
     profit: 300,
     notes: "Strong breakout above resistance",
+    profitLossType: "calculated",
   },
   {
     id: "trade2",
@@ -135,6 +138,7 @@ const defaultTrades: Trade[] = [
     duration: "4-12 hours",
     profit: -200,
     notes: "Failed support level",
+    profitLossType: "calculated",
   },
   {
     id: "trade3",
@@ -148,6 +152,7 @@ const defaultTrades: Trade[] = [
     duration: "12-24 hours",
     profit: 300,
     notes: "Bullish engulfing pattern",
+    profitLossType: "calculated",
   },
   {
     id: "trade4",
@@ -161,6 +166,7 @@ const defaultTrades: Trade[] = [
     duration: "1-3 days",
     profit: 300,
     notes: "Bearish trend continuation",
+    profitLossType: "calculated",
   },
   {
     id: "trade5",
@@ -174,6 +180,7 @@ const defaultTrades: Trade[] = [
     duration: "< 1 hour",
     profit: -200,
     notes: "False breakout",
+    profitLossType: "calculated",
   },
   {
     id: "trade6",
@@ -187,6 +194,7 @@ const defaultTrades: Trade[] = [
     duration: "3-7 days",
     profit: 100,
     notes: "Demo account test trade",
+    profitLossType: "calculated",
   },
 ]
 
@@ -465,8 +473,16 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     accountId: string,
     risk: number,
     riskReward: string,
-    result: "win" | "loss" | "breakeven"
+    result: "win" | "loss" | "breakeven",
+    profitLossType: "calculated" | "manual",
+    manualProfitLoss?: number
   ) => {
+    // If manual profit/loss is provided, use that instead
+    if (profitLossType === "manual" && manualProfitLoss !== undefined) {
+      return manualProfitLoss
+    }
+
+    // Otherwise use the calculated method
     const account = accounts.find((acc) => acc.id === accountId)
     if (!account) return 0
 
@@ -500,12 +516,17 @@ export function AccountProvider({ children }: { children: ReactNode }) {
 
     const tradeDate =
       trade.date instanceof Date ? trade.date : new Date(trade.date)
-    const profitAmount = calculateProfit(
-      trade.accountId,
-      trade.risk,
-      trade.riskReward,
-      trade.result
-    )
+    const profitAmount =
+      trade.profitLossType === "manual" && trade.manualProfitLoss !== undefined
+        ? trade.manualProfitLoss
+        : calculateProfit(
+            trade.accountId,
+            trade.risk,
+            trade.riskReward,
+            trade.result,
+            trade.profitLossType,
+            trade.manualProfitLoss
+          )
 
     const tradeId = trade.id || `trade${Date.now()}`
     const newTrade: Trade = {
@@ -742,7 +763,9 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         existingTrade.accountId,
         updatedTradeData.risk ?? existingTrade.risk,
         updatedTradeData.riskReward ?? existingTrade.riskReward,
-        updatedTradeData.result ?? existingTrade.result
+        updatedTradeData.result ?? existingTrade.result,
+        existingTrade.profitLossType,
+        updatedTradeData.manualProfitLoss
       )
     }
 

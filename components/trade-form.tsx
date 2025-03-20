@@ -7,7 +7,6 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
   PopoverContent,
@@ -103,6 +102,10 @@ export function TradeForm() {
   const [customPair, setCustomPair] = useState("")
   const [mounted, setMounted] = useState(false)
   const [calendarOpen, setCalendarOpen] = useState(false)
+  const [profitLossType, setProfitLossType] = useState<"calculated" | "manual">(
+    "calculated"
+  )
+  const [manualProfitLoss, setManualProfitLoss] = useState<string>("")
 
   // Set mounted state to true after component mounts
   useEffect(() => {
@@ -168,6 +171,17 @@ export function TradeForm() {
       return
     }
 
+    if (profitLossType === "manual" && result !== "breakeven") {
+      if (!manualProfitLoss || isNaN(Number(manualProfitLoss))) {
+        toast({
+          title: "Invalid amount",
+          description: "Please enter a valid profit/loss amount",
+          variant: "destructive",
+        })
+        return
+      }
+    }
+
     setIsSubmitting(true)
 
     // Find the pair label from the value or use custom pair
@@ -190,7 +204,14 @@ export function TradeForm() {
         riskReward: `1:${riskRewardRatio}`,
         result: result,
         duration: durationLabel,
-        profit: 0,
+        profitLossType,
+        manualProfitLoss:
+          profitLossType === "manual"
+            ? result === "win"
+              ? Number(manualProfitLoss)
+              : -Number(manualProfitLoss)
+            : undefined,
+        profit: 0, // This will be calculated in the context based on profitLossType
         notes: notes,
         screenshot: screenshot,
       })
@@ -211,6 +232,8 @@ export function TradeForm() {
       setDuration("")
       setNotes("")
       setScreenshot(undefined)
+      setProfitLossType("calculated")
+      setManualProfitLoss("")
 
       toast({
         title: "Trade recorded",
@@ -461,9 +484,14 @@ export function TradeForm() {
           </Label>
           <RadioGroup
             value={result}
-            onValueChange={(value) =>
+            onValueChange={(value) => {
               setResult(value as "win" | "loss" | "breakeven")
-            }
+              // Reset manual input when changing to breakeven
+              if (value === "breakeven") {
+                setProfitLossType("calculated")
+                setManualProfitLoss("")
+              }
+            }}
             className="flex space-x-2"
           >
             <div className="flex items-center space-x-2">
@@ -498,6 +526,57 @@ export function TradeForm() {
             </div>
           </RadioGroup>
         </div>
+
+        {/* Add new profit/loss calculation method selection */}
+        {result !== "breakeven" && (
+          <div className="space-y-1">
+            <Label className="text-gray-300">Profit/Loss Entry</Label>
+            <RadioGroup
+              value={profitLossType}
+              onValueChange={(value) => {
+                setProfitLossType(value as "calculated" | "manual")
+                setManualProfitLoss("")
+              }}
+              className="flex space-x-4"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="calculated" id="calculated" />
+                <Label htmlFor="calculated">Calculate automatically</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="manual" id="manual" />
+                <Label htmlFor="manual">Enter manually</Label>
+              </div>
+            </RadioGroup>
+
+            {/* Manual profit/loss input */}
+            {profitLossType === "manual" && (
+              <div className="mt-2">
+                <div className="relative">
+                  <span className="absolute left-3 top-2.5 text-gray-400">
+                    $
+                  </span>
+                  <Input
+                    value={manualProfitLoss}
+                    onChange={(e) => {
+                      // Remove $ and any non-numeric characters except decimal point
+                      const value = e.target.value.replace(/[^\d.]/g, "")
+                      // Ensure only one decimal point
+                      if (value === "" || /^\d*\.?\d*$/.test(value)) {
+                        setManualProfitLoss(value)
+                      }
+                    }}
+                    className="bg-gray-800 border-gray-700 text-white focus-visible:ring-cyan-500 pl-8"
+                    placeholder="Enter amount"
+                  />
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  Enter the amount you {result === "win" ? "won" : "lost"}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="space-y-1">
           <Label htmlFor="duration" className="text-gray-300">
