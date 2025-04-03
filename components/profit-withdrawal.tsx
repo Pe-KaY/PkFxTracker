@@ -62,7 +62,7 @@ export default function ProfitWithdrawalPage() {
   const withdrawnProfitsCount = accountsWithWithdrawnProfits.length
 
   // Initialize sound effect
-  const playCashSound = useSound("/sounds/cash.mp3", 0.5)
+  const playCashSound = useSound("/sounds/cash.mp3", 1.0)
 
   const triggerConfetti = () => {
     // Fire multiple confetti bursts
